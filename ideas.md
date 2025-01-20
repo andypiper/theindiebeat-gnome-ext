@@ -1,6 +1,9 @@
-- search provider
+- search provider?
+  - probably not straightforward as Azuracast doesn't have this
+  - maybe Bandwagon?
 - tooltips
 - share to fediverse platform
+  - may want a preference for configuring this
 - settings
-- translation setup
--
+- translation setup / submit to Crowdin
+- use /status endpoint to check TIBR status
