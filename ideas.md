@@ -1,0 +1,6 @@
+- search provider
+- tooltips
+- share to fediverse platform
+- settings
+- translation setup
+-
