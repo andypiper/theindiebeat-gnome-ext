@@ -1,7 +1,7 @@
 // Copyright 2025 Andy Piper.
 // SPDX-License-Identifier: GPL-3.0-only
 
-import Soup from 'gi://Soup?version=3.0';
+import Soup from 'gi://Soup';
 import GLib from 'gi://GLib';
 
 const BASE_URL = 'https://azura.theindiebeat.fm/api';
@@ -44,10 +44,11 @@ export class Channel {
 export class AzuraCastAPI {
   constructor() {
     // Initialize Soup session with optimized settings
-    this._session = new Soup.Session();
-    this._session.timeout = 10;
-    this._session.max_conns = 4;
-    this._session.max_conns_per_host = 2;
+    this._session = new Soup.Session({
+      timeout: 10,
+      max_conns: 4,
+      max_conns_per_host: 2,
+    });
 
     // Cache management
     this._channels = [];
@@ -188,7 +189,7 @@ export class AzuraCastAPI {
             reject(error);
           } finally {
             // Clear the pending request after debounce time
-            setTimeout(() => {
+            this._to = setTimeout(() => {
               this._pendingRequests.delete(endpoint);
             }, REQUEST_DEBOUNCE_TIME);
           }
@@ -203,7 +204,7 @@ export class AzuraCastAPI {
 
   _setupCacheCleanup() {
     const CLEANUP_INTERVAL = 60000; // Run cleanup every minute
-    setInterval(() => {
+    this._itvl = setInterval(() => {
       const now = Date.now();
 
       // Cleanup metadata cache

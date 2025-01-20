@@ -281,7 +281,7 @@ const TIBRPopup = GObject.registerClass(
       });
       this.box.add_child(errorLabel);
 
-      GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
+      this._sourceId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 5, () => {
         errorLabel.destroy();
         return GLib.SOURCE_REMOVE;
       });
@@ -442,15 +442,27 @@ export default class TIBRRadioExtension extends Extension {
   disable() {
     if (player) {
       player.cleanup();
+      player = null;
     }
     if (popup) {
       popup.destroy();
+      popup = null;
     }
     if (button) {
       button.destroy();
+      button = null;
     }
-    button = null;
-    popup = null;
-    player = null;
+    if (this._sourceId) {
+      GLib.Source.remove(this._sourceId);
+      this._sourceId = null;
+    }
+    if (this._to) {
+      GLib.Source.remove(this._to);
+      this._to = null;
+    }
+    if (this._invl) {
+      GLib.Source.remove(this._invl);
+      this._invl = null;
+    }
   }
 }

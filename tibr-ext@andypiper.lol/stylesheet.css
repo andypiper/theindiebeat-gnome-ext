@@ -1,8 +1,3 @@
-/**
- * Copyright 2025 Andy Piper.
- * SPDX-License-Identifier: GPL-3.0-only
- */
-
 /* Metadata */
 .metadata-box {
     padding: 12px;
@@ -32,14 +27,13 @@
 .current-channel-label {
     color: #729fcf;
     text-align: center;
-    font-size: 75%;
+    font-size: 80%;
     font-weight: bold;
 }
 
-/* Popup menu */
+/* Popup menu styling */
 .tibr-popup-sub-menu {
-    width: 100%; /* Slightly wider to accommodate larger text */
-    max-width: 110%;
+/* removed for now */
 }
 
 .artist-link-button {
@@ -68,7 +62,7 @@
     flex-grow: 1;
 }
 
-/* Loading and error */
+/* Loading and error messages */
 .loading-box {
     padding: 0.4em;
     margin: 0.5em 0 0;
