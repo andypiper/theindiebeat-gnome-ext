@@ -26,16 +26,19 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 ### Manual installation
 
 1. Clone the repository:
+
     ```sh
     git clone https://github.com/andypiper/theindiebeat-gnome-ext.git
     ```
 
 2. Navigate to the extension directory:
+
     ```sh
     cd theindiebeat-gnome-ext
     ```
 
 3. Copy the extension to the GNOME Shell extensions directory:
+
     ```sh
     cp -r tibr-ext@andypiper.lol ~/.local/share/gnome-shell/extensions/
     ```
@@ -44,18 +47,18 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
     - Press `Alt + F2`, type `r`, and press `Enter`.
     - (on Wayland, logout and log back in)
 
-5. Enable the extension using GNOME Tweaks or Extensions app.
+5. Enable the extension using the Extensions app.
 
 ## Usage
 
-- Click on the catellite icon in the GNOME Shell top panel to open the extension menu.
+- Click on the catellite icon in the top panel to open the extension menu.
 - Use the play/pause button to control playback.
 - Adjust the volume using the slider.
 - Switch between available channels from the Channels submenu.
 
 ## License
 
-This project is licensed under the MIT License. See `LICENSE` for details.
+This project is licensed under the GPL v3 License. See `LICENSE` for details.
 
 ## Acknowledgements
 

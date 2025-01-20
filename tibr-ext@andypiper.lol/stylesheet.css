@@ -1,4 +1,9 @@
-/* Metadata styling */
+/**
+ * Copyright 2025 Andy Piper.
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
+/* Metadata */
 .metadata-box {
     padding: 12px;
 }
@@ -23,7 +28,7 @@
     padding-bottom: 10px;
 }
 
-/* Current channel styling */
+/* Current channel */
 .current-channel-label {
     color: #729fcf;
     text-align: center;
@@ -31,7 +36,7 @@
     font-weight: bold;
 }
 
-/* Popup menu styling */
+/* Popup menu */
 .tibr-popup-sub-menu {
     width: 100%; /* Slightly wider to accommodate larger text */
     max-width: 110%;
@@ -48,7 +53,7 @@
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Volume control styling */
+/* Volume control */
 .volume-box {
     padding: 12px;
     display: flex;
@@ -63,7 +68,7 @@
     flex-grow: 1;
 }
 
-/* Loading and error styling */
+/* Loading and error */
 .loading-box {
     padding: 0.4em;
     margin: 0.5em 0 0;

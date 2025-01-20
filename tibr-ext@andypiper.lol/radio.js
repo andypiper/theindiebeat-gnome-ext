@@ -1,3 +1,6 @@
+// Copyright 2025 Andy Piper.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import Gst from 'gi://Gst';
 import GObject from 'gi://GObject';
 import St from 'gi://St';

@@ -1,3 +1,6 @@
+// Copyright 2025 Andy Piper.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';

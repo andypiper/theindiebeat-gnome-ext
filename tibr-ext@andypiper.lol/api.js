@@ -1,3 +1,6 @@
+// Copyright 2025 Andy Piper.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import Soup from 'gi://Soup?version=3.0';
 import GLib from 'gi://GLib';
 
