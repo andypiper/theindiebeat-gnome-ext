@@ -1,0 +1,81 @@
+/* Metadata styling */
+.metadata-box {
+    padding: 12px;
+}
+
+.track-title {
+    font-size: 85%;
+    font-weight: bold;
+    padding-top: 12px;
+}
+
+.track-artist {
+    font-size: 85%;
+    color: #888888;
+    padding-top: 10px;
+}
+
+.track-album {
+    font-size: 75%;
+    font-style: italic;
+    color: #999999;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Current channel styling */
+.current-channel-label {
+    color: #729fcf;
+    text-align: center;
+    font-size: 75%;
+    font-weight: bold;
+}
+
+/* Popup menu styling */
+.tibr-popup-sub-menu {
+    width: 100%; /* Slightly wider to accommodate larger text */
+    max-width: 110%;
+}
+
+.artist-link-button {
+    padding: 8px;
+    margin-top: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+.artist-link-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Volume control styling */
+.volume-box {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.volume-mute-icon {
+    margin-right: 5px;
+}
+
+.volume-slider {
+    flex-grow: 1;
+}
+
+/* Loading and error styling */
+.loading-box {
+    padding: 0.4em;
+    margin: 0.5em 0 0;
+    text-align: center;
+}
+
+.error-notification {
+    color: #ff4d4d;
+    font-weight: bold;
+    padding: 0.5em;
+    margin-top: 1em;
+    background-color: #ffe6e6;
+    border-radius: 0.3em;
+    text-align: center;
+}
