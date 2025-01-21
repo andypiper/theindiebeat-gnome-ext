@@ -188,22 +188,42 @@ export class RadioPlayer {
     this.stop();
     this._stopMetadataUpdates();
     if (this.api) {
-      this.api.clearCaches();
       this.api.destroy();
+      this.api = null;
     }
   }
 
   _onMessageReceived(msg) {
     switch (msg.type) {
       case Gst.MessageType.STREAM_START:
-        // Stream started successfully
+        // Stream started
         if (this.onMetadataChanged) {
           this._updateMetadata();
         }
         break;
       // TODO: additional Gst checks
+      case Gst.MessageType.CLOCK_LOST:
+        console.debug('TIBR: Clock lost, restarting playback');
+        this.playbin.set_state(Gst.State.PAUSED);
+        this.playbin.set_state(Gst.State.PLAYING);
+        break;
+      case Gst.MessageType.LATENCY:
+        console.debug('TIBR: Latency changed, recalculating');
+        this.playbin.recalculate_latency();
+        break;
+      case Gst.MessageType.BUFFERING:
+        let percent = msg.parse_buffering();
+        console.debug(`TIBR: Buffering ${percent}%`);
+        // attempt to pause and resume on buffering
+        if (percent < 100) {
+          this.playbin.set_state(Gst.State.PAUSED);
+        } else if (this.playing) {
+          this.playbin.set_state(Gst.State.PLAYING);
+        }
+        break;
       case Gst.MessageType.EOS:
       case Gst.MessageType.ERROR:
+        // this was unexpected
         let [error, debug] = msg.parse_error();
         console.error(`TIBR: GStreamer Error - ${error.message}. Debug Info: ${debug}`);
         this.stop();
