@@ -43,7 +43,7 @@ export class Channel {
 
 export class AzuraCastAPI {
   constructor() {
-    // Initialize Soup session with optimized settings
+    // Initialize Soup session
     this._session = new Soup.Session({
       timeout: 10,
       max_conns: 4,
@@ -57,6 +57,10 @@ export class AzuraCastAPI {
     this._metadataCache = new Map();
     this._pendingRequests = new Map();
 
+    // Timeouts management
+    this._timeoutSources = new Map();
+    this._cleanupSource = null;
+
     // Start periodic cache cleanup
     this._setupCacheCleanup();
   }
@@ -68,7 +72,7 @@ export class AzuraCastAPI {
       return this._channels;
     }
 
-    // If a fetch is already in progress, wait for it
+    // If a fetch is already in progress, wait
     if (this._fetchPromise) {
       return this._fetchPromise;
     }
@@ -142,11 +146,47 @@ export class AzuraCastAPI {
     }
   }
 
-  clearCaches() {
-    this._channels = [];
-    this._lastFetch = 0;
-    this._metadataCache.clear();
-    this._pendingRequests.clear();
+  _setupCacheCleanup() {
+    const CLEANUP_INTERVAL = 60000; // Run cleanup every minute
+
+    // Remove any existing cleanup source
+    if (this._cleanupSource) {
+      GLib.Source.remove(this._cleanupSource);
+      this._cleanupSource = null;
+    }
+
+    this._cleanupSource = GLib.timeout_add(GLib.PRIORITY_DEFAULT, CLEANUP_INTERVAL, () => {
+      // Don't run cleanup if we've been destroyed
+      if (!this._session) {
+        return GLib.SOURCE_REMOVE;
+      }
+
+      const now = Date.now();
+
+      // Cleanup metadata cache
+      for (const [stationId, entry] of this._metadataCache.entries()) {
+        if (now - entry.timestamp > METADATA_CACHE_DURATION) {
+          this._metadataCache.delete(stationId);
+        }
+      }
+
+      // Cleanup pending requests
+      for (const [endpoint, promise] of this._pendingRequests.entries()) {
+        // If a request has been pending too long, remove it
+        if (now - promise.timestamp > REQUEST_DEBOUNCE_TIME * 2) {
+          this._pendingRequests.delete(endpoint);
+
+          // Clean up associated timeout source
+          const sourceId = this._timeoutSources.get(endpoint);
+          if (sourceId) {
+            GLib.Source.remove(sourceId);
+            this._timeoutSources.delete(endpoint);
+          }
+        }
+      }
+
+      return GLib.SOURCE_CONTINUE;
+    });
   }
 
   async _fetchChannels() {
@@ -188,10 +228,20 @@ export class AzuraCastAPI {
           } catch (error) {
             reject(error);
           } finally {
-            // Clear the pending request after debounce time
-            this._to = setTimeout(() => {
+            // Remove any existing timeout source
+            const existingSourceId = this._timeoutSources.get(endpoint);
+            if (existingSourceId) {
+              GLib.Source.remove(existingSourceId);
+            }
+
+            // we're now clear to a create new timeout source
+            const sourceId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, REQUEST_DEBOUNCE_TIME, () => {
               this._pendingRequests.delete(endpoint);
-            }, REQUEST_DEBOUNCE_TIME);
+              this._timeoutSources.delete(endpoint);
+              return GLib.SOURCE_REMOVE;
+            });
+
+            this._timeoutSources.set(endpoint, sourceId);
           }
         }
       );
@@ -202,30 +252,34 @@ export class AzuraCastAPI {
     return request;
   }
 
-  _setupCacheCleanup() {
-    const CLEANUP_INTERVAL = 60000; // Run cleanup every minute
-    this._itvl = setInterval(() => {
-      const now = Date.now();
-
-      // Cleanup metadata cache
-      for (const [stationId, entry] of this._metadataCache.entries()) {
-        if (now - entry.timestamp > METADATA_CACHE_DURATION) {
-          this._metadataCache.delete(stationId);
-        }
-      }
-
-      // Cleanup pending requests
-      for (const [endpoint, promise] of this._pendingRequests.entries()) {
-        // If a request has been pending too long, remove it
-        if (now - promise.timestamp > REQUEST_DEBOUNCE_TIME * 2) {
-          this._pendingRequests.delete(endpoint);
-        }
-      }
-    }, CLEANUP_INTERVAL);
-  }
-
   destroy() {
-    clearInterval(this._itvl);
-    clearTimeout(this._to);
+    // Clear all timeout sources
+    for (const [endpoint, sourceId] of this._timeoutSources.entries()) {
+      if (sourceId) {
+        GLib.Source.remove(sourceId);
+      }
+    }
+
+    // Clear cleanup interval
+    if (this._cleanupSource) {
+      GLib.Source.remove(this._cleanupSource);
+    }
+
+    // Clear Soup session
+    if (this._session) {
+      this._session.abort();
+    }
+
+    // Clear other structures
+    this._channels = [];
+    this._lastFetch = 0;
+    this._metadataCache.clear();
+    this._pendingRequests.clear();
+    this._timeoutSources.clear();
+
+    // Null out references
+    this._fetchPromise = null;
+    this._cleanupSource = null;
+    this._session = null;
   }
 }
