@@ -9,6 +9,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 - Control playback with play/pause buttons
 - Adjust volume and mute audio
 - View track metadata including title, artist, and album
+- Open links to Bandwagon.fm and The Indie Beat in your browser
 
 ![Extension](screenshots/screenshot1.png) ![Playing](screenshots/screenshot2.png) ![Channels](screenshots/screenshot4.png)
 
@@ -63,8 +64,12 @@ This project is licensed under the GPL v3 License. See `LICENSE` for details.
 ## Acknowledgements
 
 - [Kirsten Lambertsen](https://mastodon.social/@mizkirsten) for being *awesome*.
-- [The Indie Beat](https://theindiebeat.fm/) for providing the music streams (and the groovy catellite).
+- [The Indie Beat](https://theindiebeat.fm/) for providing the music streams.
 - [Bandwagon.fm](https://bandwagon.fm/) for being an excellent part of the Fediverse.
 - [Neil Brown's blog post](https://neilzone.co.uk/2025/01/adding-the-indie-beat-radio-fm-to-lyrion-music-server-mpd-and-jellyfin/) on using The Indie Beat streams in Linux music players.
 - originally inspired by [the SOMA FM extension](https://github.com/TheWeirdDev/somafm-radio-gnome-ext) for GNOME Shell (but shares no code, just the idea and a bit of the look).
 - the [GNOME Extensions](https://extensions.gnome.org) reviewers for their excellent feedback! (signal management is harder than I thought)
+
+## Colophon
+
+This extension is powered by catellites. 🐱🛰️🎧
