@@ -25,7 +25,7 @@
 
 /* Current channel */
 .current-channel-label {
-    color: #729fcf;
+    color: -st-accent-color;
     text-align: center;
     font-size: 80%;
     font-weight: bold;
