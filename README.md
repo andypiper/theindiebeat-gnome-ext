@@ -67,4 +67,4 @@ This project is licensed under the GPL v3 License. See `LICENSE` for details.
 - [Bandwagon.fm](https://bandwagon.fm/) for being an excellent part of the Fediverse.
 - [Neil Brown's blog post](https://neilzone.co.uk/2025/01/adding-the-indie-beat-radio-fm-to-lyrion-music-server-mpd-and-jellyfin/) on using The Indie Beat streams in Linux music players.
 - originally inspired by [the SOMA FM extension](https://github.com/TheWeirdDev/somafm-radio-gnome-ext) for GNOME Shell (but shares no code, just the idea and a bit of the look).
-- the [GNOME Extensions](https://extensions.gnome.org) reviewers for their excellent feedback!
+- the [GNOME Extensions](https://extensions.gnome.org) reviewers for their excellent feedback! (signal management is harder than I thought)
