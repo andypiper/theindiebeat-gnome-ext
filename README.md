@@ -21,7 +21,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 
 ### Install from GNOME Extensions website
 
-(soon)
+[(soon)](https://extensions.gnome.org/extension/7819/the-indie-beat-fediverse-radio/)
 
 ### Manual installation
 
@@ -40,7 +40,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 3. Copy the extension to the GNOME Shell extensions directory:
 
     ```sh
-    cp -r tibr-ext@andypiper.lol ~/.local/share/gnome-shell/extensions/
+    cp -r tibr-ext@andypiper.org ~/.local/share/gnome-shell/extensions/
     ```
 
 4. Restart GNOME Shell:
@@ -52,7 +52,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 ## Usage
 
 - Click on the catellite icon in the top panel to open the extension menu.
-- Use the play/pause button to control playback.
+- Use the play/stop button to control playback.
 - Adjust the volume using the slider.
 - Switch between available channels from the Channels submenu.
 
@@ -67,3 +67,4 @@ This project is licensed under the GPL v3 License. See `LICENSE` for details.
 - [Bandwagon.fm](https://bandwagon.fm/) for being an excellent part of the Fediverse.
 - [Neil Brown's blog post](https://neilzone.co.uk/2025/01/adding-the-indie-beat-radio-fm-to-lyrion-music-server-mpd-and-jellyfin/) on using The Indie Beat streams in Linux music players.
 - originally inspired by [the SOMA FM extension](https://github.com/TheWeirdDev/somafm-radio-gnome-ext) for GNOME Shell (but shares no code, just the idea and a bit of the look).
+- the [GNOME Extensions](https://extensions.gnome.org) reviewers for their excellent feedback!
