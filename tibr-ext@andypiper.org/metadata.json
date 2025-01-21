@@ -1,10 +1,14 @@
 {
   "name": "The Indie Beat - Fediverse Radio",
   "description": "Stream The Indie Beat Radio - independent music from artists in the Fediverse.\nUses API and streams from theindiebeat.fm.\nRequires Gstreamer and plugins.",
-  "uuid": "tibr-ext@andypiper.lol",
+  "uuid": "tibr-ext@andypiper.org",
   "shell-version": [
     "47"
   ],
   "url": "https://github.com/andypiper/theindiebeat-gnome-ext",
-  "version": 3
+  "donations": {
+      "github": "andypiper",
+      "kofi": "andypiper"
+  },
+  "version-name": "1"
 }
