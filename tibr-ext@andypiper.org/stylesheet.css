@@ -1,21 +1,21 @@
 /* Metadata */
-.metadata-box {
+.tibr-metadata-box {
     padding: 12px;
 }
 
-.track-title {
+.tibr-track-title {
     font-size: 85%;
     font-weight: bold;
     padding-top: 12px;
 }
 
-.track-artist {
+.tibr-track-artist {
     font-size: 85%;
     color: #888888;
     padding-top: 10px;
 }
 
-.track-album {
+.tibr-track-album {
     font-size: 75%;
     font-style: italic;
     color: #999999;
@@ -24,7 +24,8 @@
 }
 
 /* Current channel */
-.current-channel-label {
+/* use st accent color to match GNOME theme accent */
+.tibr-current-channel-label {
     color: -st-accent-color;
     text-align: center;
     font-size: 80%;
@@ -36,40 +37,40 @@
 /* removed for now */
 }
 
-.artist-link-button {
+.tibr-artist-link-button {
     padding: 8px;
     margin-top: 4px;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 6px;
 }
 
-.artist-link-button:hover {
+.tibr-artist-link-button:hover {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Volume control */
-.volume-box {
+.tibr-volume-box {
     padding: 12px;
     display: flex;
     align-items: center;
 }
 
-.volume-mute-icon {
+.tibr-volume-mute-icon {
     margin-right: 5px;
 }
 
-.volume-slider {
+.tibr-volume-slider {
     flex-grow: 1;
 }
 
 /* Loading and error messages */
-.loading-box {
+.tibr-loading-box {
     padding: 0.4em;
     margin: 0.5em 0 0;
     text-align: center;
 }
 
-.error-notification {
+.tibr-error-notification {
     color: #ff4d4d;
     font-weight: bold;
     padding: 0.5em;

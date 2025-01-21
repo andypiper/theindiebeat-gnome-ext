@@ -52,7 +52,7 @@ const TIBRPopup = GObject.registerClass(
       this.loadingBox = new St.BoxLayout({
         vertical: false,
         x_align: Clutter.ActorAlign.CENTER,
-        style_class: 'tibr-popup-loading-box',
+        style_class: 'tibr-loading-box',
       });
 
       this.add_child(this.box);
@@ -66,7 +66,7 @@ const TIBRPopup = GObject.registerClass(
         icon_name: 'audio-volume-medium-symbolic',
         icon_size: 20,
         reactive: true,
-        style_class: 'volume-mute-icon',
+        style_class: 'tibr-volume-mute-icon',
       });
 
       this.mute_icon.connect('button-press-event', () => this.setMute());
@@ -81,7 +81,7 @@ const TIBRPopup = GObject.registerClass(
 
     createUi() {
       // Volume control
-      this.volBox.style_class = 'volume-box';
+      this.volBox.style_class = 'tibr-volume-box';
 
       // Loading indicator
       this.spinner = new Animation.Spinner(16);
@@ -102,7 +102,7 @@ const TIBRPopup = GObject.registerClass(
       // Track metadata container
       this.metadataBox = new St.BoxLayout({
         vertical: true,
-        style_class: 'metadata-box',
+        style_class: 'tibr-metadata-box',
       });
 
       // Track artwork
@@ -116,28 +116,28 @@ const TIBRPopup = GObject.registerClass(
       // Track info labels
       this.trackTitle = new St.Label({
         text: 'Independent music',
-        style_class: 'track-title',
+        style_class: 'tibr-track-title',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
       });
 
       this.artistName = new St.Label({
         text: 'from artists',
-        style_class: 'track-artist',
+        style_class: 'tibr-track-artist',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
       });
 
       this.albumName = new St.Label({
         text: 'in the Fediverse',
-        style_class: 'track-album',
+        style_class: 'tibr-track-album',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
       });
 
       // Artist profile link
       this.artistLink = new St.Button({
-        style_class: 'artist-link-button',
+        style_class: 'tibr-artist-link-button',
         label: 'View Artist Page',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
@@ -162,7 +162,7 @@ const TIBRPopup = GObject.registerClass(
       // Current channel indicator
       this.channelLabel = new St.Label({
         text: '',
-        style_class: 'current-channel-label',
+        style_class: 'tibr-current-channel-label',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true
       });
@@ -277,7 +277,7 @@ const TIBRPopup = GObject.registerClass(
     showErrorNotification(errorMessage) {
       let errorLabel = new St.Label({
         text: errorMessage,
-        style_class: 'error-notification',
+        style_class: 'tibr-error-notification',
       });
       this.box.add_child(errorLabel);
 
