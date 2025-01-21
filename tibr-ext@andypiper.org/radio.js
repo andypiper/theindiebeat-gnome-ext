@@ -8,7 +8,7 @@ import Clutter from 'gi://Clutter';
 
 import { AzuraCastAPI } from './api.js';
 
-const DEFAULT_VOLUME = 0.5; // TODO: connect this up to extension default value
+const DEFAULT_VOLUME = 0.5; // TODO: connect this up to configured default value
 const CLIENT_NAME = 'tibr-radio';
 const METADATA_UPDATE_INTERVAL = 30000; // 30 seconds
 
@@ -189,6 +189,7 @@ export class RadioPlayer {
     this._stopMetadataUpdates();
     if (this.api) {
       this.api.clearCaches();
+      this.api.destroy();
     }
   }
 

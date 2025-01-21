@@ -223,4 +223,9 @@ export class AzuraCastAPI {
       }
     }, CLEANUP_INTERVAL);
   }
+
+  destroy() {
+    clearInterval(this._itvl);
+    clearTimeout(this._to);
+  }
 }
