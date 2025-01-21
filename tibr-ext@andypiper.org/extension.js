@@ -315,6 +315,13 @@ const TIBRPopup = GObject.registerClass(
         this.mute_icon.set_icon_name('audio-volume-high-symbolic');
       }
     }
+
+    destroy() {
+      if (this._sourceId) {
+        GLib.Source.remove(this._sourceId);
+      }
+      super.destroy();
+    }
   }
 );
 
@@ -433,7 +440,7 @@ export default class TIBRRadioExtension extends Extension {
     extPath = this.path;
     player = new Radio.RadioPlayer();
     // TODO: save/restore volume
-    player.setVolume(0.5); // Default volume
+    player.setVolume(0.5); // initial default
 
     button = new TIBRPanelButton(player);
     Main.panel.addToStatusArea('tibr', button);
@@ -451,18 +458,6 @@ export default class TIBRRadioExtension extends Extension {
     if (button) {
       button.destroy();
       button = null;
-    }
-    if (this._sourceId) {
-      GLib.Source.remove(this._sourceId);
-      this._sourceId = null;
-    }
-    if (this._to) {
-      GLib.Source.remove(this._to);
-      this._to = null;
-    }
-    if (this._invl) {
-      GLib.Source.remove(this._invl);
-      this._invl = null;
     }
   }
 }
