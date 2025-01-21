@@ -21,7 +21,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 
 ### Install from GNOME Extensions website
 
-[(soon)](https://extensions.gnome.org/extension/7819/the-indie-beat-fediverse-radio/)
+The extension is available to install [here](https://extensions.gnome.org/extension/7822/the-indie-beat-fediverse-radio/).
 
 ### Manual installation
 
@@ -37,7 +37,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
     cd theindiebeat-gnome-ext
     ```
 
-3. Copy the extension to the GNOME Shell extensions directory:
+3. Copy the extension to your GNOME Shell extensions directory:
 
     ```sh
     cp -r tibr-ext@andypiper.org ~/.local/share/gnome-shell/extensions/

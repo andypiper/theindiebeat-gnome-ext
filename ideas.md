@@ -1,3 +1,4 @@
+- copy track / artist name from menu
 - search provider?
   - probably not straightforward as Azuracast doesn't have this
   - maybe Bandwagon?
