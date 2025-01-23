@@ -4,10 +4,14 @@
 import Soup from 'gi://Soup';
 import GLib from 'gi://GLib';
 
-const BASE_URL = 'https://azura.theindiebeat.fm/api';
-const CACHE_DURATION = 5 * 60 * 1000;           // 5 minutes for channel list
-const METADATA_CACHE_DURATION = 30 * 1000;      // 30 seconds for track metadata
-const REQUEST_DEBOUNCE_TIME = 1000;             // 1 second
+import {
+  USER_AGENT,
+  API_BASE_URL,
+  CHANNEL_CACHE_DURATION,
+  METADATA_CACHE_DURATION,
+  REQUEST_DEBOUNCE_TIME,
+  CLEANUP_INTERVAL
+} from './constants.js';
 
 export class Channel {
   constructor(data) {
@@ -48,6 +52,7 @@ export class AzuraCastAPI {
       timeout: 10,
       max_conns: 4,
       max_conns_per_host: 2,
+      user_agent: USER_AGENT
     });
 
     // Cache management
@@ -68,7 +73,7 @@ export class AzuraCastAPI {
   async getChannels() {
     // Check cache first
     const now = Date.now();
-    if (this._channels.length > 0 && (now - this._lastFetch < CACHE_DURATION)) {
+    if (this._channels.length > 0 && (now - this._lastFetch < CHANNEL_CACHE_DURATION)) {
       return this._channels;
     }
 
@@ -147,8 +152,6 @@ export class AzuraCastAPI {
   }
 
   _setupCacheCleanup() {
-    const CLEANUP_INTERVAL = 60000; // Run cleanup every minute
-
     // Remove any existing cleanup source
     if (this._cleanupSource) {
       GLib.Source.remove(this._cleanupSource);
@@ -208,7 +211,7 @@ export class AzuraCastAPI {
     }
 
     const request = new Promise((resolve, reject) => {
-      const message = Soup.Message.new('GET', BASE_URL + endpoint);
+      const message = Soup.Message.new('GET', API_BASE_URL + endpoint);
 
       this._session.send_and_read_async(
         message,

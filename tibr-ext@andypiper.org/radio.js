@@ -7,10 +7,11 @@ import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
 import { AzuraCastAPI } from './api.js';
-
-const DEFAULT_VOLUME = 0.5; // TODO: connect this up to configured default value
-const CLIENT_NAME = 'tibr-radio';
-const METADATA_UPDATE_INTERVAL = 30000; // 30 seconds
+import {
+  USER_AGENT, CLIENT_NAME,
+  DEFAULT_VOLUME,
+  METADATA_UPDATE_INTERVAL
+} from './constants.js';
 
 export const ControlButtons = GObject.registerClass(
   {
@@ -169,7 +170,13 @@ export class RadioPlayer {
   setChannel(ch) {
     this.stop();
     this.channel = ch;
-    this.playbin.set_property('uri', ch.getLink());
+    this.playbin.set_state(Gst.State.NULL);
+
+    const baseUrl = ch.getLink();
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    const urlWithUA = `${baseUrl}${separator}ua=${encodeURIComponent(USER_AGENT)}`;
+
+    this.playbin.set_property('uri', urlWithUA);
   }
 
   getChannel() {
