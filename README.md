@@ -12,6 +12,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 - Open links to Bandwagon.fm and The Indie Beat in your browser
 
 🎬 [Watch a demo video](https://makertube.net/w/3qSQBQSwPLqGyYtopiTAk4)
+🎓 [Read about how I made this](https://andypiper.co.uk/2025/01/25/the-indie-beat-on-your-linux-desktop/)
 
 ![Extension](screenshots/screenshot1.png) ![Playing](screenshots/screenshot2.png) ![Channels](screenshots/screenshot4.png)
 
@@ -22,7 +23,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 
 ## Installation
 
-### Install from GNOME Extensions website
+### Install via GNOME Extensions website
 
 The extension is available to install [here](https://extensions.gnome.org/extension/7822/the-indie-beat-fediverse-radio/).
 
@@ -69,9 +70,9 @@ This project is licensed under the GPL v3 License. See `LICENSE` for details.
 - [The Indie Beat](https://theindiebeat.fm/) for providing the music streams.
 - [Bandwagon.fm](https://bandwagon.fm/) for being an excellent part of the Fediverse.
 - [Neil Brown's blog post](https://neilzone.co.uk/2025/01/adding-the-indie-beat-radio-fm-to-lyrion-music-server-mpd-and-jellyfin/) on using The Indie Beat streams in Linux music players.
-- originally inspired by [the SOMA FM extension](https://github.com/TheWeirdDev/somafm-radio-gnome-ext) for GNOME Shell (but shares no code, just the idea and a bit of the look).
-- the [GNOME Extensions](https://extensions.gnome.org) reviewers for their excellent feedback! (signal management is harder than I thought)
+- originally inspired by [the SomaFM extension](https://github.com/TheWeirdDev/somafm-radio-gnome-ext) for GNOME Shell (but shares no code, just the idea and a bit of the look).
+- the [GNOME Extensions](https://extensions.gnome.org) reviewers for their excellent feedback! (aka, signal management is harder than I thought)
 
 ## Colophon
 
-This extension is powered by catellites. 🐱🛰️🎧
+This extension is chock full of 📡🐱🛰️🎧 CATELLITE POWER 📡🐱🛰️🎧
