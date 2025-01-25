@@ -24,7 +24,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 
 ## Installation
 
-[![GNOME Extensions](https://raw.githubusercontent.com/andypiper/theindiebeat-gnome-ext/refs/heads/main/get-it-on-ego.svg)](https://extensions.gnome.org/extension/7822/the-indie-beat-fediverse-radio/)
+[<img src="https://raw.githubusercontent.com/andypiper/theindiebeat-gnome-ext/refs/heads/main/get-it-on-ego.svg?sanitize=true" alt="Get it on GNOME Extensions" height="140" align="top">](https://extensions.gnome.org/extension/7822/the-indie-beat-fediverse-radio/)
 
 The extension is available to install [here](https://extensions.gnome.org/extension/7822/the-indie-beat-fediverse-radio/).
 
@@ -57,10 +57,13 @@ The extension is available to install [here](https://extensions.gnome.org/extens
 ## Usage
 
 - Click on the catellite icon in the top panel to open the extension menu.
-- Use the play/stop button to control playback.
-- Adjust the volume using the slider.
 - Switch between available channels from the Channels submenu.
-- Hover over the artist and album text for a floating copy button; click to copy to clipboard.
+- Open the Bandwagon.fm or The Indie Beat websites from the menu.
+- When a track is playing:
+  - Use the play/stop button to control playback.
+  - Adjust the volume using the slider.
+  - Hover over the artist and album text for a floating copy button; click to copy to clipboard.
+  - Click on the View Artist Profile button to open the artist's profile on Bandwagon.fm.
 
 ## License
 
@@ -81,4 +84,5 @@ This project is licensed under the GPL v3 License. See `LICENSE` for details.
 
 ## Colophon
 
-This extension is chock full of 📡🐱🛰️🎧 CATELLITE POWER 📡🐱🛰️🎧
+This extension is chock full of
+📡🐱🛰️🎧 CATELLITE POWER 📡🐱🛰️🎧
