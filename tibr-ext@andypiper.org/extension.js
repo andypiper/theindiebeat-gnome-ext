@@ -14,6 +14,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Slider from 'resource:///org/gnome/shell/ui/slider.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import { INACTIVE_RESET_TIMEOUT } from './constants.js';
 import * as Radio from './radio.js';
 
 let player;
@@ -22,11 +23,11 @@ let popup;
 
 export let extPath;
 
-const TIBRPopup = GObject.registerClass(
+const TIBRPlayerPopup = GObject.registerClass(
   {
-    GTypeName: 'TIBRPopup',
+    GTypeName: 'TIBRPlayerPopup',
   },
-  class TIBRPopup extends PopupMenu.PopupBaseMenuItem {
+  class TIBRPlayerPopup extends PopupMenu.PopupBaseMenuItem {
     _init(player) {
       super._init({
         hover: false,
@@ -34,6 +35,8 @@ const TIBRPopup = GObject.registerClass(
         can_focus: true,
       });
 
+      this.isDefaultState = true;
+      this._inactivityTimeoutId = null;
       this.volume = 0.5; // Default volume
       this.old_vol = 0;
       this.player = player;
@@ -91,7 +94,7 @@ const TIBRPopup = GObject.registerClass(
       this.loadtxt.hide();
 
       // Control button
-      this.controlbtns = new Radio.ControlButtons(this.player, this);
+      this.controlbtns = new Radio.TIBRControlButtons(this.player, this);
       this.player.setOnError(() => {
         this.setError(false);
         this.setError(true);
@@ -113,12 +116,27 @@ const TIBRPopup = GObject.registerClass(
         x_expand: true,
       });
 
-      // Track info labels
       this.trackTitle = new St.Label({
         text: 'Independent music',
         style_class: 'tibr-track-title',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
+      });
+
+      this.artistInfoBox = new St.BoxLayout({
+        vertical: false,
+        x_align: Clutter.ActorAlign.CENTER,
+        x_expand: true,
+        style_class: 'tibr-info-box',
+        reactive: true
+      });
+
+      // Add hover handlers
+      this.artistInfoBox.connect('enter-event', () => {
+        if (!this.isDefaultState) this.artistCopyButton.show();
+      });
+      this.artistInfoBox.connect('leave-event', () => {
+        this.artistCopyButton.hide();
       });
 
       this.artistName = new St.Label({
@@ -128,12 +146,65 @@ const TIBRPopup = GObject.registerClass(
         x_expand: true,
       });
 
+      this.artistCopyButton = new St.Button({
+        style_class: 'tibr-copy-button',
+        child: new St.Icon({
+          icon_name: 'edit-copy-symbolic',
+          icon_size: 16
+        }),
+        visible: false
+      });
+
+      this.artistCopyButton.connect('clicked', () => {
+        St.Clipboard.get_default().set_text(
+          St.ClipboardType.CLIPBOARD,
+          this.artistName.text
+        );
+      });
+
+      this.artistInfoBox.add_child(this.artistName);
+      this.artistInfoBox.add_child(this.artistCopyButton);
+
+      this.albumInfoBox = new St.BoxLayout({
+        vertical: false,
+        x_align: Clutter.ActorAlign.CENTER,
+        x_expand: true,
+        style_class: 'tibr-info-box',
+        reactive: true
+      });
+
+      this.albumInfoBox.connect('enter-event', () => {
+        if (!this.isDefaultState) this.albumCopyButton.show();
+      });
+      this.albumInfoBox.connect('leave-event', () => {
+        this.albumCopyButton.hide();
+      });
+
       this.albumName = new St.Label({
         text: 'in the Fediverse',
         style_class: 'tibr-track-album',
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
       });
+
+      this.albumCopyButton = new St.Button({
+        style_class: 'tibr-copy-button',
+        child: new St.Icon({
+          icon_name: 'edit-copy-symbolic',
+          icon_size: 16
+        }),
+        visible: false
+      });
+
+      this.albumCopyButton.connect('clicked', () => {
+        St.Clipboard.get_default().set_text(
+          St.ClipboardType.CLIPBOARD,
+          this.albumName.text
+        );
+      });
+
+      this.albumInfoBox.add_child(this.albumName);
+      this.albumInfoBox.add_child(this.albumCopyButton);
 
       // Artist profile link
       this.artistLink = new St.Button({
@@ -153,8 +224,8 @@ const TIBRPopup = GObject.registerClass(
       // Add all metadata elements
       this.metadataBox.add_child(this.artwork);
       this.metadataBox.add_child(this.trackTitle);
-      this.metadataBox.add_child(this.artistName);
-      this.metadataBox.add_child(this.albumName);
+      this.metadataBox.add_child(this.artistInfoBox);
+      this.metadataBox.add_child(this.albumInfoBox);
       this.metadataBox.add_child(this.artistLink);
 
       this.box.add_child(this.metadataBox);
@@ -183,6 +254,9 @@ const TIBRPopup = GObject.registerClass(
         this._showDefaultMetadata();
         return;
       }
+
+      this.isDefaultState = false;
+      this._startInactivityTimer();
 
       // Update artwork
       if (trackInfo.artwork) {
@@ -218,12 +292,45 @@ const TIBRPopup = GObject.registerClass(
 
     _showDefaultMetadata() {
       this.artwork.set_gicon(Gio.icon_new_for_string(extPath + '/images/catellite.png'));
-      this.trackTitle.set_text('The Indie Beat');
-      this.artistName.set_text('');
-      this.albumName.set_text('');
+      this.trackTitle.set_text('Independent music');
+      this.artistName.set_text('from artists');
+      this.albumName.set_text('in the Fediverse');
       this.artistLink.hide();
+      this.channelLabel.hide();
+      this.artistCopyButton.visible = false;
+      this.albumCopyButton.visible = false;
       this.currentExternalLink = null;
       this.loadtxt.hide();
+    }
+
+    _startInactivityTimer() {
+      this._clearInactivityTimer();
+      this._inactivityTimeoutId = GLib.timeout_add(
+        GLib.PRIORITY_DEFAULT,
+        INACTIVE_RESET_TIMEOUT,
+        () => {
+          this._resetToDefault();
+          this._inactivityTimeoutId = null;
+          return GLib.SOURCE_REMOVE;
+        }
+      );
+    }
+
+    _clearInactivityTimer() {
+      if (this._inactivityTimeoutId) {
+        GLib.Source.remove(this._inactivityTimeoutId);
+        this._inactivityTimeoutId = null;
+      }
+    }
+
+    _resetToDefault() {
+      if (!this.player.isPlaying()) {
+        this.isDefaultState = true;
+        this._showDefaultMetadata();
+      } else {
+        // If still playing, restart the inactivity timer
+        this._startInactivityTimer();
+      }
     }
 
     _onVolumeChanged(slider) {
@@ -292,6 +399,8 @@ const TIBRPopup = GObject.registerClass(
       this.controlbtns.playing = false;
       this.setLoading(false);
       this._showDefaultMetadata();
+      this.artistCopyButton.hide();
+      this.albumCopyButton.hide();
     }
 
     channelChanged() {
@@ -320,13 +429,14 @@ const TIBRPopup = GObject.registerClass(
       if (this._sourceId) {
         GLib.Source.remove(this._sourceId);
       }
+      this._clearInactivityTimer();
       super.destroy();
     }
   }
 );
 
-const ChannelBox = GObject.registerClass(
-  class ChannelBox extends PopupMenu.PopupBaseMenuItem {
+const TIBRChannelMenuItem = GObject.registerClass(
+  class TIBRChannelMenuItem extends PopupMenu.PopupBaseMenuItem {
     _init(channel, player, popup) {
       super._init({
         reactive: true,
@@ -354,11 +464,11 @@ const ChannelBox = GObject.registerClass(
   }
 );
 
-const TIBRPanelButton = GObject.registerClass(
+const TIBRStatusButton = GObject.registerClass(
   {
-    GTypeName: 'TIBRPanelButton',
+    GTypeName: 'TIBRStatusButton',
   },
-  class TIBRButton extends PanelMenu.Button {
+  class TIBRStatusButton extends PanelMenu.Button {
     _init(player) {
       super._init(0.0, 'TIBR');
 
@@ -375,7 +485,7 @@ const TIBRPanelButton = GObject.registerClass(
       this.add_child(box);
       this.add_style_class_name('panel-status-button');
 
-      popup = new TIBRPopup(player);
+      popup = new TIBRPlayerPopup(player);
       this.menu.addMenuItem(popup);
       this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
@@ -422,7 +532,7 @@ const TIBRPanelButton = GObject.registerClass(
         // Add each channel
         channels.forEach((ch) => {
           channelsMenu.menu.addMenuItem(
-            new ChannelBox(ch, player, popup)
+            new TIBRChannelMenuItem(ch, player, popup)
           );
         });
       } catch (error) {
@@ -442,7 +552,7 @@ export default class TIBRRadioExtension extends Extension {
     // TODO: save/restore volume
     player.setVolume(0.5); // initial default
 
-    button = new TIBRPanelButton(player);
+    button = new TIBRStatusButton(player);
     Main.panel.addToStatusArea('tibr', button);
   }
 

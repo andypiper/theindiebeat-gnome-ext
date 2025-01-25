@@ -13,11 +13,11 @@ import {
   METADATA_UPDATE_INTERVAL
 } from './constants.js';
 
-export const ControlButtons = GObject.registerClass(
+export const TIBRControlButtons = GObject.registerClass(
   {
-    GTypeName: 'ControlButtons',
+    GTypeName: 'TIBRControlButtons',
   },
-  class ControlButtons extends St.BoxLayout {
+  class TIBRControlButtons extends St.BoxLayout {
     _init(player, pr) {
       super._init({
         vertical: false,

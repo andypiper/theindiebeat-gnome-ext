@@ -16,3 +16,5 @@ export const METADATA_CACHE_DURATION = 30 * 1000;     // 30 seconds for API refr
 export const REQUEST_DEBOUNCE_TIME = 1000;            // 1 second
 export const CLEANUP_INTERVAL = 60 * 1000;            // 1 minute
 export const METADATA_UPDATE_INTERVAL = 30 * 1000;    // 30 seconds for player refresh
+
+export const INACTIVE_RESET_TIMEOUT = 10 * 60 * 1000; // 10 minutes

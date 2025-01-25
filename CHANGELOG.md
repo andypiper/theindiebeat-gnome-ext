@@ -1,0 +1,8 @@
+- 1.2
+  - add copy option for artist/album name
+  - modify class names for namespacing to avoid conflicts
+  - add minimal changelog
+- 1.1
+  - set user-agent on GStreamer and Soup connections to TIBR API
+- 1.0
+  - initial release
