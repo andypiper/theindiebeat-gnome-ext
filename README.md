@@ -11,7 +11,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 - View track metadata including title, artist, and album
 - Open links to Bandwagon.fm and The Indie Beat in your browser
 
-[Video on MakerTube](https://makertube.net/w/3qSQBQSwPLqGyYtopiTAk4)
+🎬 [Watch a demo video](https://makertube.net/w/3qSQBQSwPLqGyYtopiTAk4)
 
 ![Extension](screenshots/screenshot1.png) ![Playing](screenshots/screenshot2.png) ![Channels](screenshots/screenshot4.png)
 
