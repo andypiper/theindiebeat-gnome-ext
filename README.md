@@ -12,7 +12,9 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 - Open links to Bandwagon.fm and The Indie Beat in your browser
 
 🎬 [Watch a demo video](https://makertube.net/w/3qSQBQSwPLqGyYtopiTAk4)
+
 🎓 [Read about how I made this](https://andypiper.co.uk/2025/01/25/the-indie-beat-on-your-linux-desktop/)
+
 
 ![Extension](screenshots/screenshot1.png) ![Playing](screenshots/screenshot2.png) ![Channels](screenshots/screenshot4.png)
 
