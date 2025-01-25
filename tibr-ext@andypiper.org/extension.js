@@ -494,7 +494,7 @@ const TIBRStatusButton = GObject.registerClass(
       // TODO: probably make these URLs constants
       let bwfLinkItem = new PopupMenu.PopupMenuItem('Explore Bandwagon');
       bwfLinkItem.connect('activate', () =>
-        Gio.app_info_launch_default_for_uri('https://bandwagon.fm/discover', null)
+        Gio.app_info_launch_default_for_uri('https://bandwagon.fm/albums', null)
       );
       this.menu.addMenuItem(bwfLinkItem);
 
