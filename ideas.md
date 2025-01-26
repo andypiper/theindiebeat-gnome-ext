@@ -15,6 +15,7 @@
 - [ ] album art viewer
   - may need larger artwork?
 - [ ] liking tracks
+- [ ] track change notifications
 
 stuff added by The Indie Beat e.g. mixtapes..
 
