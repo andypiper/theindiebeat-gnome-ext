@@ -15,7 +15,7 @@ The Indie Beat is a GNOME Shell extension that allows you to stream independent 
 
 🎓 [Read about how I made this](https://andypiper.co.uk/2025/01/25/the-indie-beat-on-your-linux-desktop/)
 
-![Extension](screenshots/screenshot1.png) ![Playing](screenshots/screenshot2.png) ![Channels](screenshots/screenshot4.png)
+<img src="https://raw.githubusercontent.com/andypiper/theindiebeat-gnome-ext/refs/heads/main/screenshots/screenshot1.png?sanitize=true" alt="Extension" height="420" align="top"> <img src="https://raw.githubusercontent.com/andypiper/theindiebeat-gnome-ext/refs/heads/main/screenshots/screenshot2.png?sanitize=true" alt="Playing" height="450" align="top"> <img src="https://raw.githubusercontent.com/andypiper/theindiebeat-gnome-ext/refs/heads/main/screenshots/screenshot4.png?sanitize=true" alt="Channels" height="520" align="top">
 
 ## Requirements
 
