@@ -2,6 +2,8 @@
 
 The Indie Beat is a GNOME Shell extension that allows you to stream independent music from artists in the Fediverse, thanks to [The Indie Beat Radio FM](https://theindiebeat.fm), [Bandwagon](https://bandwagon.fm), and the artists who share their music there.
 
+A simpler alternative for non-GNOME desktop users is [also available](https://github.com/andypiper/theindiebeat-simple-player).
+
 ## Features
 
 - Stream music from [The Indie Beat](https://theindiebeat.fm/)
