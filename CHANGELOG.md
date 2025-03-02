@@ -1,3 +1,5 @@
+- 1.3
+  - support GNOME 46 (thanks John Morahan), 48
 - 1.2
   - add copy option for artist/album name
   - modify class names for namespacing to avoid conflicts

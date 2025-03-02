@@ -13,6 +13,7 @@ import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Slider from 'resource:///org/gnome/shell/ui/slider.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 import { INACTIVE_RESET_TIMEOUT } from './constants.js';
 import * as Radio from './radio.js';
@@ -29,6 +30,9 @@ const TIBRPlayerPopup = GObject.registerClass(
   },
   class TIBRPlayerPopup extends PopupMenu.PopupBaseMenuItem {
     _init(player) {
+
+      const shellVersion = parseFloat(Config.PACKAGE_VERSION);
+
       super._init({
         hover: false,
         activate: false,
@@ -42,18 +46,27 @@ const TIBRPlayerPopup = GObject.registerClass(
       this.player = player;
 
       this.box = new St.BoxLayout({
-        vertical: true,
+	...(this.shellVersion >= 48
+            ? { orientation: Clutter.Orientation.VERTICAL }
+            : { vertical: true }
+        ),
         width: 250,
       });
 
       // Volume control section
       this.volBox = new St.BoxLayout({
-        vertical: false,
+         ...(this.shellVersion >= 48
+             ? { orientation: Clutter.Orientation.HORIZONTAL }
+             : { vertical: false }
+        ),
         width: 250,
       });
 
       this.loadingBox = new St.BoxLayout({
-        vertical: false,
+         ...(this.shellVersion >= 48
+             ? { orientation: Clutter.Orientation.HORIZONTAL }
+             : { vertical: false }
+        ),
         x_align: Clutter.ActorAlign.CENTER,
         style_class: 'tibr-loading-box',
       });
@@ -104,7 +117,10 @@ const TIBRPlayerPopup = GObject.registerClass(
 
       // Track metadata container
       this.metadataBox = new St.BoxLayout({
-        vertical: true,
+         ...(this.shellVersion >= 48
+             ? { orientation: Clutter.Orientation.VERTICAL }
+             : { vertical: true }
+        ),
         style_class: 'tibr-metadata-box',
       });
 
@@ -124,7 +140,10 @@ const TIBRPlayerPopup = GObject.registerClass(
       });
 
       this.artistInfoBox = new St.BoxLayout({
-        vertical: false,
+        ...(this.shellVersion >= 48
+            ? { orientation: Clutter.Orientation.VERTICAL }
+            : { vertical: true }
+        ),
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
         style_class: 'tibr-info-box',
@@ -166,7 +185,10 @@ const TIBRPlayerPopup = GObject.registerClass(
       this.artistInfoBox.add_child(this.artistCopyButton);
 
       this.albumInfoBox = new St.BoxLayout({
-        vertical: false,
+        ...(this.shellVersion >= 48
+             ? { orientation: Clutter.Orientation.VERTICAL }
+             : { vertical: true }
+        ),
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
         style_class: 'tibr-info-box',

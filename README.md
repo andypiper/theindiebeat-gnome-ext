@@ -50,6 +50,12 @@ The extension is available to install [here](https://extensions.gnome.org/extens
     cp -r tibr-ext@andypiper.org ~/.local/share/gnome-shell/extensions/
     ```
 
+    or, if the `just` command runner is installed:
+
+    ```sh
+    just install
+    ```
+
 4. Restart GNOME Shell:
     - Press `Alt + F2`, type `r`, and press `Enter`.
     - (on Wayland, logout and log back in)

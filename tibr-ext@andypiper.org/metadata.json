@@ -4,12 +4,13 @@
   "uuid": "tibr-ext@andypiper.org",
   "shell-version": [
     "46",
-    "47"
+    "47",
+    "48"
   ],
   "url": "https://github.com/andypiper/theindiebeat-gnome-ext",
   "donations": {
       "github": "andypiper",
       "kofi": "andypiper"
   },
-  "version-name": "1.2"
+  "version-name": "1.3"
 }

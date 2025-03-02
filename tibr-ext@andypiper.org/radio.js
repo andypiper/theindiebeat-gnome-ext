@@ -5,6 +5,7 @@ import Gst from 'gi://Gst';
 import GObject from 'gi://GObject';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
+import * as Config from 'resource:///org/gnome/shell/misc/config.js';
 
 import { AzuraCastAPI } from './api.js';
 import {
@@ -19,8 +20,12 @@ export const TIBRControlButtons = GObject.registerClass(
   },
   class TIBRControlButtons extends St.BoxLayout {
     _init(player, pr) {
+      const shellVersion = parseFloat(Config.PACKAGE_VERSION);
       super._init({
-        vertical: false,
+        ...(this.shellVersion >= 48
+           ? { orientation: Clutter.Orientation.HORIZONTAL }
+           : { vertical: false }
+        ),
         x_align: Clutter.ActorAlign.CENTER,
         x_expand: true,
         style: 'padding: 12px 0;'
