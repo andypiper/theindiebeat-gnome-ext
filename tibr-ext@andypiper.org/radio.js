@@ -84,13 +84,9 @@ export class RadioPlayer {
     this.playing = false;
 
     // Setup message handling
-    let bus = this.playbin.get_bus();
+    const bus = this.playbin.get_bus();
     bus.add_signal_watch();
-    bus.connect('message', (bus, msg) => {
-      if (msg != null) {
-        this._onMessageReceived(msg);
-      }
-    });
+    bus.connect('message', (_, msg) => msg && this._onMessageReceived(msg));
 
     this.onError = null;
     this.onMetadataChanged = null;
@@ -131,17 +127,29 @@ export class RadioPlayer {
     }
   }
 
-  _startMetadataUpdates() {
+  async _startMetadataUpdates() {
     this._stopMetadataUpdates();
-    this._updateMetadata(); // Initial update
-    this._metadataInterval = setInterval(() => {
-      this._updateMetadata();
-    }, METADATA_UPDATE_INTERVAL);
+    await this._updateMetadata(); // Initial update
+    
+    // Use a recursive timeout pattern instead of setInterval for better error handling
+    const scheduleNextUpdate = async () => {
+      if (!this.playing) return; // Stop if no longer playing
+      
+      await new Promise(resolve => {
+        this._metadataInterval = setTimeout(async () => {
+          await this._updateMetadata();
+          scheduleNextUpdate();
+          resolve();
+        }, METADATA_UPDATE_INTERVAL);
+      });
+    };
+    
+    scheduleNextUpdate();
   }
 
   _stopMetadataUpdates() {
     if (this._metadataInterval) {
-      clearInterval(this._metadataInterval);
+      clearTimeout(this._metadataInterval);
       this._metadataInterval = null;
     }
   }
@@ -154,15 +162,15 @@ export class RadioPlayer {
     this._startMetadataUpdates();
   }
 
-  setOnError(onError) {
+  setOnError = onError => {
     this.onError = onError;
   }
 
-  setOnMetadataChanged(onMetadataChanged) {
+  setOnMetadataChanged = onMetadataChanged => {
     this.onMetadataChanged = onMetadataChanged;
   }
 
-  setMute(mute) {
+  setMute = mute => {
     this.playbin.set_property('mute', mute);
   }
 
@@ -223,8 +231,8 @@ export class RadioPlayer {
         console.debug('TIBR: Latency changed, recalculating');
         this.playbin.recalculate_latency();
         break;
-      case Gst.MessageType.BUFFERING:
-        let percent = msg.parse_buffering();
+      case Gst.MessageType.BUFFERING: {
+        const percent = msg.parse_buffering();
         console.debug(`TIBR: Buffering ${percent}%`);
         // attempt to pause and resume on buffering
         if (percent < 100) {
@@ -233,19 +241,21 @@ export class RadioPlayer {
           this.playbin.set_state(Gst.State.PLAYING);
         }
         break;
+      }
       case Gst.MessageType.EOS:
-      case Gst.MessageType.ERROR:
+      case Gst.MessageType.ERROR: {
         // this was unexpected
-        let [error, debug] = msg.parse_error();
+        const [error, debug] = msg.parse_error();
         console.error(`TIBR: GStreamer Error - ${error.message}. Debug Info: ${debug}`);
         this.stop();
+        
         if (this.pr) {
           this.pr.showErrorNotification(`Playback Error: ${error.message}`);
         }
-        if (this.onError) {
-          this.onError();
-        }
+        
+        this.onError?.();
         break;
+      }
     }
   }
 }
