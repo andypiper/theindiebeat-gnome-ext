@@ -7,6 +7,7 @@ import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
+import NM from 'gi://NM';
 
 import * as Animation from 'resource:///org/gnome/shell/ui/animation.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
@@ -495,6 +496,11 @@ const TIBRStatusButton = GObject.registerClass(
     _init(player) {
       super._init(0.0, 'TIBR');
 
+      this.player = player;
+      this._networkClient = null;
+      this._networkMonitor = null;
+      this._networkSignalId = 0;
+
       let box = new St.BoxLayout({
         style_class: 'panel-status-menu-box',
       });
@@ -530,12 +536,58 @@ const TIBRStatusButton = GObject.registerClass(
       this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
       // Channels menu
-      const channelsMenu = new PopupMenu.PopupSubMenuMenuItem('Channels');
-      channelsMenu.menu.actor.add_style_class_name('tibr-popup-sub-menu');
-      this.menu.addMenuItem(channelsMenu);
+      this.channelsMenu = new PopupMenu.PopupSubMenuMenuItem('Channels');
+      this.channelsMenu.menu.actor.add_style_class_name('tibr-popup-sub-menu');
+      this.menu.addMenuItem(this.channelsMenu);
 
-      // Load channels
-      this._loadChannels(channelsMenu);
+      // Initialize network monitoring
+      this._initNetworkMonitoring();
+
+      // Load channels (first attempt)
+      this._loadChannels(this.channelsMenu);
+    }
+
+    _initNetworkMonitoring() {
+      try {
+        // Set up NetworkManager client for monitoring connectivity
+        this._networkClient = NM.Client.new(null);
+        
+        // Connect to state-changed signal
+        this._networkSignalId = this._networkClient.connect(
+          'notify::connectivity',
+          this._onNetworkStateChanged.bind(this)
+        );
+
+        // Also use GNetworkMonitor as a fallback
+        this._networkMonitor = Gio.NetworkMonitor.get_default();
+        this._networkMonitorSignalId = this._networkMonitor.connect(
+          'network-changed',
+          this._onNetworkAvailabilityChanged.bind(this)
+        );
+
+        console.log('TIBR: Network monitoring initialized');
+      } catch (error) {
+        console.error('TIBR: Error setting up network monitoring:', error);
+      }
+    }
+
+    _onNetworkStateChanged() {
+      if (!this._networkClient) return;
+      
+      const connectivity = this._networkClient.connectivity;
+      
+      // NM.ConnectivityState.FULL = 4
+      if (connectivity === NM.ConnectivityState.FULL) {
+        console.log('TIBR: Network is fully connected, reloading channels');
+        this._loadChannels(this.channelsMenu);
+      }
+    }
+
+    _onNetworkAvailabilityChanged(monitor, available) {
+      if (available) {
+        console.log('TIBR: Network became available, reloading channels');
+        this._loadChannels(this.channelsMenu);
+      }
     }
 
     async _loadChannels(channelsMenu) {
@@ -552,8 +604,17 @@ const TIBRStatusButton = GObject.registerClass(
           return;
         }
 
+        // Sort channels, keeping ID 1 first, rest alphabetically by name
+        const sortedChannels = [...channels].sort((a, b) => {
+          // Keep channel with ID 1 at the top
+          if (a.id === 1) return -1;
+          if (b.id === 1) return 1;
+          // Sort the rest alphabetically
+          return a.getName().localeCompare(b.getName());
+        });
+
         // Add each channel
-        channels.forEach((ch) => {
+        sortedChannels.forEach((ch) => {
           channelsMenu.menu.addMenuItem(
             new TIBRChannelMenuItem(ch, player, popup)
           );
@@ -564,6 +625,24 @@ const TIBRStatusButton = GObject.registerClass(
           { reactive: false });
         channelsMenu.menu.addMenuItem(errorMenu);
       }
+    }
+    
+    destroy() {
+      // Clean up network monitoring
+      if (this._networkClient && this._networkSignalId > 0) {
+        this._networkClient.disconnect(this._networkSignalId);
+        this._networkSignalId = 0;
+      }
+      
+      if (this._networkMonitor && this._networkMonitorSignalId > 0) {
+        this._networkMonitor.disconnect(this._networkMonitorSignalId);
+        this._networkMonitorSignalId = 0;
+      }
+      
+      this._networkClient = null;
+      this._networkMonitor = null;
+      
+      super.destroy();
     }
   }
 );
