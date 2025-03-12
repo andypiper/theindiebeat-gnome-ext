@@ -32,6 +32,7 @@ const TIBRPlayerPopup = GObject.registerClass(
     _init(player) {
 
       const shellVersion = parseFloat(Config.PACKAGE_VERSION);
+      this.shellVersion = shellVersion;
 
       super._init({
         hover: false,

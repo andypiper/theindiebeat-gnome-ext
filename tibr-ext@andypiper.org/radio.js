@@ -22,7 +22,7 @@ export const TIBRControlButtons = GObject.registerClass(
     _init(player, pr) {
       const shellVersion = parseFloat(Config.PACKAGE_VERSION);
       super._init({
-        ...(this.shellVersion >= 48
+        ...(shellVersion >= 48
            ? { orientation: Clutter.Orientation.HORIZONTAL }
            : { vertical: false }
         ),
