@@ -1,3 +1,5 @@
+- 1.4
+  - support GNOME 49
 - 1.3
   - support GNOME 46 (thanks John Morahan), 48
 - 1.2

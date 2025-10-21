@@ -5,12 +5,13 @@
   "shell-version": [
     "46",
     "47",
-    "48"
+    "48",
+    "49"
   ],
   "url": "https://github.com/andypiper/theindiebeat-gnome-ext",
   "donations": {
       "github": "andypiper",
       "kofi": "andypiper"
   },
-  "version-name": "1.3"
+  "version-name": "1.4"
 }
